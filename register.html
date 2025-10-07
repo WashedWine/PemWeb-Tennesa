@@ -1,0 +1,43 @@
+<head>
+  <meta charset="UTF-8">
+  <title>Daftar - TENNESA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo">🎾 TENNESA</div>
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="#">Tentang</a>
+  </nav>
+  <div class="auth-btn">
+    <a href="login.html" class="login">Login</a>
+    <a href="register.html" class="register">Register</a>
+  </div>
+</header>
+
+<div class="form-container">
+  <h2>Daftar TENNESA</h2>
+  <p style="text-align:center;margin-bottom:20px;">Buat akun baru untuk mulai booking lapangan tennis</p>
+  <form>
+    <input type="text" placeholder="Nama Lengkap" required>
+    <input type="email" placeholder="Email" required>
+    <input type="tel" placeholder="No. HP" required>
+    <input type="password" placeholder="Password (minimal 6 karakter)" required>
+    <input type="password" placeholder="Konfirmasi Password" required>
+    <button type="submit">Daftar</button>
+  </form>
+  <p style="text-align:center;margin-top:12px;">Sudah punya akun? <a href="login.html">Masuk sekarang</a></p>
+</div>
+</body>
+</html>
+
+<script>
+  const currentLocation = location.href;
+  const menuItems = document.querySelectorAll('nav a');
+  menuItems.forEach(item => {
+    if (item.href === currentLocation) {
+      item.classList.add('active');
+    }
+  });
+</script>

@@ -1,0 +1,164 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TENNESA - Booking Lapangan Tennis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">🎾 TENNESA</a>
+  <nav>
+    <a href="index.html" id="beranda-link">Beranda</a>
+    <a href="tentang.html">Tentang</a>
+    <a href="#" id="dashboard-link">Dashboard</a>
+  </nav>
+  <div class="auth-btn">
+    <a href="login.html" class="login">Login</a>
+    <a href="register.html" class="register">Register</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="content">
+    <h1>Booking Lapangan Tennis Terbaik</h1>
+    <p>Nikmati pengalaman bermain tennis di fasilitas modern dengan sistem reservasi mudah dan cepat.</p>
+    <a href="user.html" class="btn">Booking Sekarang</a>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="card">
+    <div class="stats-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+    </div>
+    <h3>Lapangan Tersedia</h3>
+    <p>2 dari 3 lapangan</p>
+  </div>
+  <div class="card">
+    <div class="stats-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+    </div>
+    <h3>Harga Mulai</h3>
+    <p>Rp 100.000/jam</p>
+  </div>
+  <div class="card">
+    <div class="stats-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+    </div>
+    <h3>Jam Operasional</h3>
+    <p>06:00 - 22:00<br>Setiap hari</p>
+  </div>
+  <div class="card">
+    <div class="stats-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+    </div>
+    <h3>Lokasi</h3>
+    <p>Jl. Olahraga No. 123<br>Jakarta Selatan</p>
+  </div>
+</section>
+
+<section class="lapangan">
+  <h2>Lapangan Kami</h2>
+  <p class="subtitle">Pilih dari berbagai lapangan tennis berkualitas tinggi dengan fasilitas lengkap untuk pengalaman bermain yang optimal.</p>
+  <div class="lapangan-list">
+    <div class="lapangan-item">
+      <div class="item-header">
+        <h3>Lapangan A</h3>
+        <span class="status-badge tersedia">Tersedia</span>
+      </div>
+      <p class="fasilitas-title">Fasilitas:</p>
+      <div class="facilities">
+        <span>Lighting</span> &#8226;
+        <span>Net Standar</span> &#8226;
+        <span>Lantai Sintetis</span>
+      </div>
+      <div class="item-footer">
+        <div class="price-info">
+          <p>Harga per jam</p>
+          <p class="price">Rp 150.000</p>
+        </div>
+        <a href="user.html" class="btn-submit" style="width: auto; text-decoration: none;">Book Now</a>
+      </div>
+    </div>
+    <div class="lapangan-item">
+      <div class="item-header">
+        <h3>Lapangan B</h3>
+        <span class="status-badge tersedia">Tersedia</span>
+      </div>
+      <p class="fasilitas-title">Fasilitas:</p>
+      <div class="facilities">
+        <span>Lighting</span> &#8226;
+        <span>Net Standar</span> &#8226;
+        <span>Lantai Clay</span>
+      </div>
+      <div class="item-footer">
+        <div class="price-info">
+          <p>Harga per jam</p>
+          <p class="price">Rp 120.000</p>
+        </div>
+        <a href="user.html" class="btn-submit" style="width: auto; text-decoration: none;">Book Now</a>
+      </div>
+    </div>
+    <div class="lapangan-item">
+      <div class="item-header">
+        <h3>Lapangan C</h3>
+        <span class="status-badge penuh">Penuh</span>
+      </div>
+      <p class="fasilitas-title">Fasilitas:</p>
+      <div class="facilities">
+        <span>Net Standar</span> &#8226;
+        <span>Lantai Hard Court</span>
+      </div>
+      <div class="item-footer">
+        <div class="price-info">
+          <p>Harga per jam</p>
+          <p class="price">Rp 100.000</p>
+        </div>
+        <button class="unavailable" disabled>Tidak Tersedia</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-container">
+    <div class="footer-column about">
+      <h3>🎾 TENNESA</h3>
+      <p>Platform reservasi lapangan tennis terpercaya dengan fasilitas modern dan pelayanan terbaik.</p>
+    </div>
+    <div class="footer-column">
+      <h3>Kontak</h3>
+      <ul class="contact-list">
+        <li><span>info@tennesa.com</span></li>
+        <li><span>+62 21 1234 5678</span></li>
+        <li><span>Jl. Olahraga No. 123, Jakarta Selatan</span></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Social Media</h3>
+      <ul class="contact-list">
+        <li><span>@tennesa_official</span></li>
+        <li><span>TENNESA Jakarta</span></li>
+        <li><span>@tennesa.jkt</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 TENNESA. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+  const currentLocation = location.href;
+  const menuItems = document.querySelectorAll('header nav a');
+  menuItems.forEach(item => {
+    if (item.href === currentLocation) {
+      item.classList.add('active');
+    }
+  });
+</script>
+
+</body>
+</html>

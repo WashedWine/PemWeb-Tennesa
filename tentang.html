@@ -1,0 +1,291 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tentang - TENNESA</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Gaya spesifik untuk halaman "Tentang" saja. 
+      Font dan gaya dasar lainnya akan diambil dari style.css 
+    */
+    
+    .subtitle {
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Hero Section - Gambar diganti ke 2.jpg */
+    .hero-about {
+      background: url('2.jpg') center/cover no-repeat;
+      color: white; text-align: center; padding: 100px 20px; position: relative;
+    }
+    .hero-about::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.6); }
+    .hero-about .content { position: relative; z-index: 1; }
+    .hero-about h1 { font-size: 48px; margin-bottom: 8px; }
+    .hero-about p { font-size: 18px; color: #ddd; }
+
+    /* Main Content Section */
+    .main-container { max-width: 1100px; margin: 80px auto; padding: 0 20px; display: flex; align-items: center; gap: 50px; }
+    .text-content { flex: 1; }
+    .text-content h2 { font-size: 32px; margin-bottom: 20px; }
+    .text-content p { margin-bottom: 15px; color: #555; }
+    .image-content { flex: 1; max-width: 500px; }
+    .image-content img { width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    
+    .feature-list { list-style: none; padding: 0; margin-top: 25px; }
+    .feature-list li { display: flex; align-items: center; margin-bottom: 12px; font-weight: 500; }
+    .feature-list li::before { content: '✓'; color: #fff; background-color: #28a745; border-radius: 50%; width: 22px; height: 22px; display: inline-block; text-align: center; line-height: 22px; margin-right: 12px; font-weight: bold; }
+
+    /* Features Section */
+    .features-section { padding: 80px 20px; background-color: #f9fafb; text-align: center; }
+    .features-section h2 { font-size: 32px; margin-bottom: 15px; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1100px; margin: 0 auto; }
+    .feature-card { background: #fff; padding: 25px; border-radius: 12px; border: 1px solid #eee; text-align: left; display: flex; gap: 20px; align-items: flex-start; }
+    .feature-card .icon { background-color: #0a0a23; color: #fff; border-radius: 8px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .feature-card h3 { font-size: 18px; margin-bottom: 8px; }
+    .feature-card p { font-size: 15px; color: #555; line-height: 1.6; }
+    
+    /* How It Works Section */
+    .how-it-works { padding: 60px 20px; background: #fff; text-align: center; }
+    .how-it-works h2 { font-size: 32px; margin-bottom: 15px; }
+    .steps-container { display: flex; justify-content: space-between; gap: 30px; max-width: 1100px; margin: 40px auto 0 auto; }
+    .step { flex: 1; }
+    .step .number { width: 50px; height: 50px; background-color: #0a0a23; color: #fff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; margin-bottom: 20px; }
+    .step h3 { margin-bottom: 10px; font-size: 18px; }
+    .step p { color: #555; padding: 0 10px; }
+
+    /* Why Choose Us Section */
+    .why-choose-us { padding: 60px 20px; background: #f9fafb; text-align: center; }
+    .why-choose-us h2 { font-size: 32px; margin-bottom: 15px; }
+    .reasons-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1100px; margin: 40px auto 0 auto; }
+    .reason-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 30px; }
+    .reason-icon { width: 60px; height: 60px; border-radius: 50%; border: 1px solid #e5e7eb; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; color: #0a0a23; }
+    .reason-card h3 { font-size: 18px; margin-bottom: 10px; }
+    .reason-card p { color: #555; }
+    
+    /* Stats Bar Section */
+    .stats-bar {
+      background-color: #0a0a23;
+      color: #fff;
+      padding: 50px 20px;
+    }
+    .stats-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+    }
+    .stat-item h3 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .stat-item p {
+      color: #ccc;
+      font-size: 16px;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      padding: 80px 20px;
+      background-color: #fff;
+      text-align: center;
+    }
+    .contact-section h2 {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      max-width: 1100px;
+      margin: 40px auto 0 auto;
+    }
+    .contact-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #f0f4ff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: #4a6bff;
+    }
+    .contact-card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .contact-card p {
+      color: #555;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .contact-card a {
+      color: #555;
+      display: block;
+    }
+    .contact-card a:hover {
+      color: #0a0a23;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .features-grid, .reasons-grid, .contact-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-container, .stats-container { flex-direction: column; gap: 30px; }
+    }
+    @media (max-width: 768px) {
+      .main-container { flex-direction: column; }
+      .features-grid, .reasons-grid, .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🎾 TENNESA</div>
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="tentang.html">Tentang</a>
+  </nav>
+  <div class="auth-btn">
+    <a href="login.html" class="login">Login</a>
+    <a href="register.html" class="register">Register</a>
+  </div>
+</header>
+
+<section class="hero-about">
+  <div class="content"><h1>Tentang TENNESA</h1><p>Platform Reservasi Lapangan Tennis Terpercaya</p></div>
+</section>
+
+<main class="main-container">
+  <div class="text-content">
+    <h2>Apa itu TENNESA?</h2>
+    <p>TENNESA adalah platform reservasi lapangan tennis modern yang dirancang untuk memberikan kemudahan dalam booking lapangan tennis dengan sistem yang terintegrasi dan user-friendly.</p>
+    <p>Dengan TENNESA, Anda dapat memesan lapangan tennis favorit kapan saja dan dimana saja hanya dengan beberapa klik. Kami menyediakan berbagai pilihan lapangan dengan fasilitas lengkap dan harga yang kompetitif.</p>
+    <p>Sistem kami dilengkapi dengan fitur notifikasi email, pembayaran online/offline, riwayat booking, dan dashboard admin yang memudahkan pengelolaan lapangan secara profesional.</p>
+    <ul class="feature-list">
+      <li>Lapangan dengan standar internasional</li>
+      <li>Sistem booking yang mudah dan cepat</li>
+      <li>Harga transparan tanpa biaya tersembunyi</li>
+      <li>Customer service responsif</li>
+    </ul>
+  </div>
+  <div class="image-content">
+   <img src="3.jpg" alt="Pemain tennis sedang beristirahat di lapangan">
+  </div>
+</main>
+
+<section class="features-section">
+  <h2>Fitur Unggulan</h2>
+  <p class="subtitle">TENNESA dilengkapi dengan berbagai fitur canggih untuk memberikan pengalaman booking terbaik</p>
+  <div class="features-grid">
+    <div class="feature-card"><div class="icon">📅</div><div class="text"><h3>Booking Mudah & Cepat</h3><p>Pilih tanggal dan waktu yang diinginkan dengan sistem booking real-time yang mudah digunakan.</p></div></div>
+    <div class="feature-card"><div class="icon">💳</div><div class="text"><h3>Pembayaran Fleksibel</h3><p>Bayar secara online atau offline sesuai dengan kenyamanan Anda.</p></div></div>
+    <div class="feature-card"><div class="icon">🔔</div><div class="text"><h3>Notifikasi Email</h3><p>Dapatkan konfirmasi booking dan pengingat otomatis melalui email.</p></div></div>
+    <div class="feature-card"><div class="icon">🛡️</div><div class="text"><h3>Sistem Aman</h3><p>Data Anda terlindungi dengan sistem keamanan terpercaya.</p></div></div>
+    <div class="feature-card"><div class="icon">🕒</div><div class="text"><h3>Riwayat Booking</h3><p>Lihat dan kelola semua booking Anda dalam satu dashboard.</p></div></div>
+    <div class="feature-card"><div class="icon">👥</div><div class="text"><h3>Admin Dashboard</h3><p>Kelola lapangan, jadwal, dan user dengan mudah melalui admin panel.</p></div></div>
+  </div>
+</section>
+
+<section class="how-it-works">
+  <h2>Cara Kerja</h2>
+  <p class="subtitle">Booking lapangan tennis di TENNESA sangat mudah dan cepat</p>
+  <div class="steps-container">
+    <div class="step"><div class="number">1</div><h3>Daftar Akun</h3><p>Buat akun TENNESA dengan mengisi formulir registrasi sederhana.</p></div>
+    <div class="step"><div class="number">2</div><h3>Pilih Lapangan & Waktu</h3><p>Pilih lapangan favorit Anda dan tentukan tanggal serta jam yang diinginkan.</p></div>
+    <div class="step"><div class="number">3</div><h3>Konfirmasi Pembayaran</h3><p>Lakukan pembayaran secara online atau pilih metode offline sesuai kebutuhan.</p></div>
+    <div class="step"><div class="number">4</div><h3>Datang & Bermain</h3><p>Tunjukkan konfirmasi booking Anda dan nikmati permainan tennis di lapangan berkualitas.</p></div>
+  </div>
+</section>
+
+<section class="why-choose-us">
+  <h2>Mengapa Memilih TENNESA?</h2>
+  <p class="subtitle">Kami berkomitmen memberikan pengalaman bermain tennis terbaik untuk Anda</p>
+  <div class="reasons-grid">
+    <div class="reason-card"><div class="reason-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.64 3.64-1.28-1.28a2.33 2.33 0 0 0-3.3 0l-2.6 2.6a14.2 14.2 0 0 0-2.8 4.2 14.2 14.2 0 0 0-4.2 2.8l-2.6 2.6a2.33 2.33 0 0 0 0 3.3l1.28 1.28a2.33 2.33 0 0 0 3.3 0l2.6-2.6a14.2 14.2 0 0 0 2.8-4.2 14.2 14.2 0 0 0 4.2-2.8l2.6-2.6a2.33 2.33 0 0 0 0-3.3Z"></path><path d="m11.25 11.25 1.5 1.5"></path></svg></div><h3>Fasilitas Premium</h3><p>Lapangan tennis dengan standar internasional dan peralatan berkualitas tinggi.</p></div>
+    <div class="reason-card"><div class="reason-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3v7h6l-8 11v-7H5l8-11z"></path></svg></div><h3>Booking Real-time</h3><p>Sistem booking yang update secara real-time untuk ketersediaan lapangan.</p></div>
+    <div class="reason-card"><div class="reason-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg></div><h3>Pelayanan Terbaik</h3><p>Tim customer service yang siap membantu Anda 24/7.</p></div>
+  </div>
+</section>
+
+<section class="stats-bar">
+  <div class="stats-container">
+    <div class="stat-item">
+      <h3>1000+</h3>
+      <p>Booking Sukses</p>
+    </div>
+    <div class="stat-item">
+      <h3>500+</h3>
+      <p>Member Aktif</p>
+    </div>
+    <div class="stat-item">
+      <h3>3</h3>
+      <p>Lapangan Berkualitas</p>
+    </div>
+    <div class="stat-item">
+      <h3>4.8/5</h3>
+      <p>Rating Pengguna</p>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section">
+  <h2>Hubungi Kami</h2>
+  <p class="subtitle">Ada pertanyaan? Tim kami siap membantu Anda</p>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="contact-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+      </div>
+      <h3>Email</h3>
+      <p>
+        <a href="mailto:info@tennesa.com">info@tennesa.com</a>
+        <a href="mailto:support@tennesa.com">support@tennesa.com</a>
+      </p>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      </div>
+      <h3>Telepon</h3>
+      <p>
+        <a href="tel:+622112345678">+62 21 1234 5678</a>
+        <a href="tel:+6281234567890">+62 812 3456 7890</a>
+      </p>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+      </div>
+      <h3>Alamat</h3>
+      <p>Jl. Olahraga No. 123<br>Jakarta Selatan, 12345</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Script untuk membuat menu navigasi aktif (bold)
+  const currentLocation = location.href;
+  const menuItems = document.querySelectorAll('nav a');
+  menuItems.forEach(item => {
+    if (item.href === currentLocation) {
+      item.classList.add('active');
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Admin - TENNESA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">🎾 TENNESA</a>
+  <nav>
+    <a href="index.html" id="beranda-link">Beranda</a>
+    <a href="tentang.html">Tentang</a>
+    <a href="#" id="dashboard-link">Dashboard</a>
+  </nav>
+  <div class="auth-btn">
+    </div>
+</header>
+
+<section class="dashboard">
+  <h2>Dashboard Admin</h2>
+  <p>Kelola sistem reservasi TENNESA</p>
+
+  <div class="summary">
+    <div class="card">
+      <h3>Total Booking</h3>
+      <p><strong>2</strong></p>
+    </div>
+    <div class="card">
+      <h3>Total Pendapatan</h3>
+      <p><strong>Rp 420.000</strong></p>
+    </div>
+    <div class="card">
+      <h3>Booking Aktif</h3>
+      <p><strong>2</strong></p>
+    </div>
+    <div class="card">
+      <h3>Total User</h3>
+      <p><strong>3</strong></p>
+    </div>
+  </div>
+
+  <h3>Kelola Data Lapangan</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Fasilitas</th>
+        <th>Harga/Jam</th>
+        <th>Status</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Lapangan A</td>
+        <td>Lighting, Net Standar, Lantai Sintetis</td>
+        <td>Rp 150.000</td>
+        <td><span style="color:green;font-weight:bold;">Tersedia</span></td>
+        <td class="action-btn">
+          <button class="edit">✏️</button>
+          <button class="delete">🗑️</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Lapangan B</td>
+        <td>Lighting, Net Standar, Lantai Clay</td>
+        <td>Rp 120.000</td>
+        <td><span style="color:green;font-weight:bold;">Tersedia</span></td>
+        <td class="action-btn">
+          <button class="edit">✏️</button>
+          <button class="delete">🗑️</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Lapangan C</td>
+        <td>Net Standar, Lantai Hard Court</td>
+        <td>Rp 100.000</td>
+        <td><span style="color:red;font-weight:bold;">Tidak Tersedia</span></td>
+        <td class="action-btn">
+          <button class="edit">✏️</button>
+          <button class="delete">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button style="margin-top:20px;padding:10px 20px;border:none;border-radius:8px;background:#0a0a23;color:#fff;font-weight:bold;cursor:pointer;">
+    + Tambah Lapangan
+  </button>
+</section>
+
+<script src="script.js"></script>
+<script>
+  // Script untuk menu navigasi header
+  const currentLocation = location.href;
+  const menuItems = document.querySelectorAll('header nav a');
+  menuItems.forEach(item => {
+    if (item.href === currentLocation) {
+      item.classList.add('active');
+    }
+  });
+</script>
+
+</body>
+</html>
