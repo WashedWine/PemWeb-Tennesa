@@ -1,0 +1,248 @@
+/* ===== KODE CSS UNTUK DASHBOARD USER ===== */
+body {
+  background-color: #f9fafb; /* Latar belakang abu-abu muda */
+}
+
+/* Kontainer Utama */
+.dashboard-container {
+  padding: 40px 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  margin-bottom: 25px;
+}
+
+.dashboard-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+.dashboard-header p {
+  color: #555;
+}
+
+/* Tab Navigasi Horizontal */
+.tabs-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 8px 8px 0 0;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-bottom: none;
+  position: relative;
+  bottom: -1px; /* Agar menyatu dengan border-bottom container */
+  cursor: pointer;
+}
+
+.tab.active {
+  background-color: #fff;
+  color: #0a0a23;
+  border-color: #e5e7eb;
+  font-weight: 600;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Layout Grid untuk Konten */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr; /* Kolom kiri lebih besar */
+  gap: 30px;
+  align-items: flex-start;
+}
+
+/* Gaya Kartu (Card) */
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 30px;
+}
+
+.card-header h3 {
+  font-size: 18px;
+  margin: 0;
+}
+.card-header p {
+  color: #555;
+  margin-top: 5px;
+}
+
+.card-content {
+  margin-top: 25px;
+}
+
+/* Gaya Formulir */
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: #0a0a23;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Daftar Ketersediaan Lapangan */
+.availability-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.court-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+.court-info p {
+    margin: 0;
+    line-height: 1.4;
+}
+.court-info .price {
+    color: #555;
+    font-size: 14px;
+}
+
+/* CSS Untuk Halaman Profil */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+.profile-field {
+    background-color: #f9fafb;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #333;
+}
+input.profile-field:disabled {
+    background-color: #e5e7eb;
+    color: #555;
+    cursor: not-allowed;
+}
+
+.btn-dark {
+    padding: 12px 24px;
+    background-color: #0a0a23;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+/* CSS Untuk Halaman Riwayat */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+.history-details p {
+    margin: 0;
+    line-height: 1.6;
+}
+.history-details .detail-meta {
+    font-size: 14px;
+    color: #555;
+}
+.history-details .detail-price {
+    font-weight: 600;
+    margin-top: 5px;
+}
+.history-status {
+    text-align: right;
+}
+.history-status .payment-status {
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+}
+.status-badge.aktif { background-color: #0a0a23; color: #fff; }
+.status-badge.selesai { background-color: #e5e7eb; color: #555; }
+
+/* CSS Untuk Halaman Notifikasi */
+.notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.notification-item {
+    background-color: #f9fafb;
+    padding: 20px;
+    border-radius: 10px;
+}
+.notification-item h4 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+.notification-item p {
+    margin: 0;
+    color: #333;
+}
+.notification-item .timestamp {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .dashboard-grid, .profile-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .dashboard-container { padding: 20px; }
+  .tabs-container { overflow-x: auto; }
+  .history-item { flex-direction: column; gap: 15px; }
+  .history-status { text-align: left; }
+  header { padding: 15px 20px; }
+  header nav { position: static; transform: none; }
+}

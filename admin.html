@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Dashboard Admin - TENNESA</title>
@@ -10,7 +12,7 @@
   <nav>
     <a href="index.html" id="beranda-link">Beranda</a>
     <a href="tentang.html">Tentang</a>
-    <a href="#" id="dashboard-link">Dashboard</a>
+    <a href="admin.html" id="dashboard-link">Dashboard</a>
   </nav>
   <div class="auth-btn">
     </div>
@@ -23,19 +25,15 @@
   <div class="summary">
     <div class="card">
       <h3>Total Booking</h3>
-      <p><strong>2</strong></p>
+      <p><strong id="total-booking">0</strong></p>
     </div>
     <div class="card">
       <h3>Total Pendapatan</h3>
-      <p><strong>Rp 420.000</strong></p>
+      <p><strong id="total-pendapatan">Rp 0</strong></p>
     </div>
     <div class="card">
-      <h3>Booking Aktif</h3>
-      <p><strong>2</strong></p>
-    </div>
-    <div class="card">
-      <h3>Total User</h3>
-      <p><strong>3</strong></p>
+      <h3>Total Lapangan</h3>
+      <p><strong id="total-lapangan">0</strong></p>
     </div>
   </div>
 
@@ -50,55 +48,110 @@
         <th>Aksi</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>Lapangan A</td>
-        <td>Lighting, Net Standar, Lantai Sintetis</td>
-        <td>Rp 150.000</td>
-        <td><span style="color:green;font-weight:bold;">Tersedia</span></td>
-        <td class="action-btn">
-          <button class="edit">✏️</button>
-          <button class="delete">🗑️</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Lapangan B</td>
-        <td>Lighting, Net Standar, Lantai Clay</td>
-        <td>Rp 120.000</td>
-        <td><span style="color:green;font-weight:bold;">Tersedia</span></td>
-        <td class="action-btn">
-          <button class="edit">✏️</button>
-          <button class="delete">🗑️</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Lapangan C</td>
-        <td>Net Standar, Lantai Hard Court</td>
-        <td>Rp 100.000</td>
-        <td><span style="color:red;font-weight:bold;">Tidak Tersedia</span></td>
-        <td class="action-btn">
-          <button class="edit">✏️</button>
-          <button class="delete">🗑️</button>
-        </td>
-      </tr>
-    </tbody>
+    <tbody id="courts-table-body">
+      </tbody>
   </table>
 
-  <button style="margin-top:20px;padding:10px 20px;border:none;border-radius:8px;background:#0a0a23;color:#fff;font-weight:bold;cursor:pointer;">
+  <button id="add-court-btn" style="margin-top:20px;padding:10px 20px;border:none;border-radius:8px;background:#0a0a23;color:#fff;font-weight:bold;cursor:pointer;">
     + Tambah Lapangan
   </button>
 </section>
 
+<script src="app.js"></script>
 <script src="script.js"></script>
 <script>
-  // Script untuk menu navigasi header
-  const currentLocation = location.href;
-  const menuItems = document.querySelectorAll('header nav a');
-  menuItems.forEach(item => {
-    if (item.href === currentLocation) {
-      item.classList.add('active');
-    }
-  });
+document.addEventListener("DOMContentLoaded", () => {
+    const tableBody = document.getElementById("courts-table-body");
+    const addCourtBtn = document.getElementById("add-court-btn");
+    const totalBookingEl = document.getElementById("total-booking");
+    const totalPendapatanEl = document.getElementById("total-pendapatan");
+    const totalLapanganEl = document.getElementById("total-lapangan");
+
+
+    // Fungsi untuk memuat ringkasan/summary
+    const loadSummary = () => {
+        const bookings = JSON.parse(localStorage.getItem("tennesa_bookings")) || [];
+        const courts = JSON.parse(localStorage.getItem("tennesa_courts")) || [];
+        
+        const totalPendapatan = bookings.reduce((sum, booking) => sum + booking.totalPrice, 0);
+
+        totalBookingEl.textContent = bookings.length;
+        totalPendapatanEl.textContent = `Rp ${totalPendapatan.toLocaleString('id-ID')}`;
+        totalLapanganEl.textContent = courts.length;
+    };
+
+    // Fungsi untuk merender data lapangan ke tabel
+    const renderCourts = () => {
+      const courts = JSON.parse(localStorage.getItem("tennesa_courts")) || [];
+      tableBody.innerHTML = ""; // Kosongkan tabel sebelum diisi
+      
+      if (courts.length > 0) {
+        courts.forEach(court => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${court.name}</td>
+            <td>${court.facilities}</td>
+            <td>Rp ${court.price.toLocaleString('id-ID')}</td>
+            <td><span style="color:${court.status === 'Tersedia' ? 'green' : 'red'};font-weight:bold;">${court.status}</span></td>
+            <td class="action-btn">
+              <button class="delete" data-id="${court.id}">🗑️</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } else {
+        tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Belum ada data lapangan.</td></tr>';
+      }
+    };
+
+    // Event listener untuk tombol tambah lapangan
+    addCourtBtn.addEventListener("click", () => {
+      const name = prompt("Masukkan Nama Lapangan:");
+      if (!name) return;
+      const facilities = prompt("Masukkan Fasilitas (pisahkan dengan koma):");
+      if (!facilities) return;
+      const price = parseInt(prompt("Masukkan Harga per Jam (angka saja):"));
+      if (isNaN(price)) return;
+
+
+      if (name && facilities && price) {
+        const courts = JSON.parse(localStorage.getItem("tennesa_courts")) || [];
+        const newCourt = {
+          id: Date.now(), // ID unik berdasarkan timestamp
+          name,
+          facilities,
+          price,
+          status: "Tersedia"
+        };
+        courts.push(newCourt);
+        localStorage.setItem("tennesa_courts", JSON.stringify(courts));
+        renderCourts(); // Muat ulang tabel
+        loadSummary(); // Update summary
+        alert("Lapangan baru berhasil ditambahkan!");
+      } else {
+        alert("Input tidak valid. Semua kolom harus diisi.");
+      }
+    });
+    
+    // Event listener untuk tombol hapus (menggunakan event delegation)
+    tableBody.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete')) {
+            const courtId = parseInt(e.target.dataset.id);
+            if (confirm('Apakah Anda yakin ingin menghapus lapangan ini?')) {
+                let courts = JSON.parse(localStorage.getItem("tennesa_courts"));
+                courts = courts.filter(court => court.id !== courtId);
+                localStorage.setItem("tennesa_courts", JSON.stringify(courts));
+                renderCourts(); // Muat ulang tabel
+                loadSummary(); // Update summary
+                alert('Lapangan berhasil dihapus.');
+            }
+        }
+    });
+
+    // Panggil fungsi saat halaman dimuat
+    renderCourts(); 
+    loadSummary();
+});
 </script>
 
 </body>

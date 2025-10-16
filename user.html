@@ -1,295 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard User - TENNESA</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* ===== KODE CSS UNTUK DASHBOARD ===== */
-
-    body {
-      background-color: #f9fafb; /* Latar belakang abu-abu muda */
-    }
-
-    /* Kontainer Utama */
-    .dashboard-container {
-      padding: 40px 80px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .dashboard-header {
-      margin-bottom: 25px;
-    }
-
-    .dashboard-header h2 {
-      font-size: 28px;
-      font-weight: 700;
-    }
-    .dashboard-header p {
-      color: #555;
-    }
-
-    /* Tab Navigasi Horizontal */
-    .tabs-container {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 25px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .tab {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 20px;
-      border-radius: 8px 8px 0 0;
-      text-decoration: none;
-      color: #555;
-      font-weight: 500;
-      border: 1px solid transparent;
-      border-bottom: none;
-      position: relative;
-      bottom: -1px; /* Agar menyatu dengan border-bottom container */
-      cursor: pointer;
-    }
-    
-    .tab.active {
-      background-color: #fff;
-      color: #0a0a23;
-      border-color: #e5e7eb;
-      font-weight: 600;
-    }
-    
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    /* Layout Grid untuk Konten */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr; /* Kolom kiri lebih besar */
-      gap: 30px;
-      align-items: flex-start;
-    }
-
-    /* Gaya Kartu (Card) */
-    .card {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 30px;
-    }
-
-    .card-header h3 {
-      font-size: 18px;
-      margin: 0;
-    }
-    .card-header p {
-      color: #555;
-      margin-top: 5px;
-    }
-    
-    .card-content {
-      margin-top: 25px;
-    }
-
-    /* Gaya Formulir */
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 15px;
-    }
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-
-    .btn-submit {
-      width: 100%;
-      padding: 14px;
-      background: #0a0a23;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      margin-top: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    /* Daftar Ketersediaan Lapangan */
-    .availability-list {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    .court-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-    }
-    .court-info p {
-        margin: 0;
-        line-height: 1.4;
-    }
-    .court-info .price {
-        color: #555;
-        font-size: 14px;
-    }
-    .status-badge {
-      padding: 6px 14px;
-      border-radius: 16px;
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .status-badge.tersedia { background-color: #0a0a23; color: #fff; }
-    .status-badge.penuh { background-color: #e5e7eb; color: #555; }
-
-    /* CSS Untuk Halaman Profil */
-    .profile-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-    }
-    .profile-field {
-        background-color: #f9fafb;
-        padding: 12px 15px;
-        border-radius: 8px;
-        font-size: 15px;
-        color: #333;
-    }
-    .btn-dark {
-        padding: 12px 24px;
-        background-color: #0a0a23;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        font-size: 15px;
-        margin-top: 10px;
-    }
-
-    /* CSS Untuk Halaman Riwayat */
-    .history-list {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-    .history-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding: 20px;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-    }
-    .history-details p {
-        margin: 0;
-        line-height: 1.6;
-    }
-    .history-details .detail-meta {
-        font-size: 14px;
-        color: #555;
-    }
-    .history-details .detail-price {
-        font-weight: 600;
-        margin-top: 5px;
-    }
-    .history-status {
-        text-align: right;
-    }
-    .history-status .payment-status {
-        font-size: 14px;
-        color: #555;
-        margin-top: 5px;
-    }
-    .status-badge.aktif { background-color: #0a0a23; color: #fff; }
-    .status-badge.selesai { background-color: #e5e7eb; color: #555; }
-
-    /* CSS Untuk Halaman Notifikasi */
-    .notification-list {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-    .notification-item {
-        background-color: #f9fafb;
-        padding: 20px;
-        border-radius: 10px;
-    }
-    .notification-item h4 {
-        margin: 0 0 5px 0;
-        font-size: 16px;
-    }
-    .notification-item p {
-        margin: 0;
-        color: #333;
-    }
-    .notification-item .timestamp {
-        font-size: 14px;
-        color: #555;
-        margin-top: 10px;
-    }
-
-    /* CSS UNTUK HALAMAN PEMBAYARAN */
-    .payment-methods {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-    .payment-method-item {
-        padding: 20px;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-    }
-    .payment-method-item h4 {
-        margin: 0 0 5px 0;
-        font-size: 16px;
-    }
-    .payment-method-item p {
-        margin: 0;
-        color: #333;
-    }
-    
-    /* Responsive */
-    @media (max-width: 992px) {
-        .dashboard-grid, .profile-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 768px) {
-      .dashboard-container { padding: 20px; }
-      .tabs-container { overflow-x: auto; }
-      .history-item { flex-direction: column; gap: 15px; }
-      .history-status { text-align: left; }
-    }
-  </style>
-</head>
+  <link rel="stylesheet" href="user-style.css"> </head>
 <body>
 <header>
   <a href="index.html" class="logo">🎾 TENNESA</a>
   <nav>
     <a href="index.html" id="beranda-link">Beranda</a>
     <a href="tentang.html">Tentang</a>
-    <a href="#" id="dashboard-link">Dashboard</a>
+    <a href="user.html" id="dashboard-link">Dashboard</a>
   </nav>
-  <div class="auth-btn">
-    </div>
+  <div class="auth-btn"></div>
 </header>
 
 <div class="dashboard-container">
   <div class="dashboard-header">
-    <h2>Dashboard User</h2>
-    <p>Selamat datang, John Doe!</p>
+    <h2 id="welcome-message">Dashboard User</h2>
+    <p>Selamat datang kembali!</p>
   </div>
 
   <div class="tabs-container">
@@ -297,86 +28,27 @@
     <a class="tab" data-tab="profil">👤 Profil</a>
     <a class="tab" data-tab="riwayat">🕑 Riwayat</a>
     <a class="tab" data-tab="notifikasi">🔔 Notifikasi</a>
-    <a class="tab" data-tab="pembayaran">💳 Pembayaran</a>
   </div>
 
   <div class="tab-content active" id="reservasi">
     <div class="dashboard-grid">
       <div class="card">
-        <div class="card-header">
-          <h3>Buat Reservasi Baru</h3>
-          <p>Pilih tanggal, jam, dan lapangan yang diinginkan</p>
-        </div>
+        <div class="card-header"><h3>Buat Reservasi Baru</h3><p>Pilih tanggal, jam, dan lapangan</p></div>
         <div class="card-content">
-          <form>
-            <div class="form-group">
-              <label for="tanggal">Tanggal</label>
-              <input type="date" id="tanggal" placeholder="Pilih tanggal">
-            </div>
-            <div class="form-group">
-              <label for="lapangan">Lapangan</label>
-              <select id="lapangan">
-                <option>Pilih lapangan</option>
-                <option>Lapangan A</option>
-                <option>Lapangan B</option>
-                <option>Lapangan C</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="jam">Jam Mulai</label>
-              <select id="jam">
-                <option>Pilih jam</option>
-                <option>08:00</option>
-                <option>09:00</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="durasi">Durasi (jam)</label>
-              <select id="durasi">
-                <option>1 jam</option>
-                <option>2 jam</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="pembayaran-form">Metode Pembayaran</label>
-              <select id="pembayaran-form">
-                <option>Pilih metode pembayaran</option>
-                <option>Transfer Bank</option>
-              </select>
-            </div>
+          <form id="booking-form">
+            <div class="form-group"><label for="tanggal">Tanggal</label><input type="date" id="tanggal" required></div>
+            <div class="form-group"><label for="lapangan">Lapangan</label><select id="lapangan" required><option value="">Pilih lapangan</option></select></div>
+            <div class="form-group"><label for="jam">Jam Mulai</label><select id="jam" required><option value="">Pilih jam</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>19:00</option><option>20:00</option></select></div>
+            <div class="form-group"><label for="durasi">Durasi (jam)</label><select id="durasi" required><option value="1">1 jam</option><option value="2">2 jam</option></select></div>
             <button type="submit" class="btn-submit">Buat Reservasi</button>
           </form>
         </div>
       </div>
       <div class="card">
-        <div class="card-header">
-          <h3>Ketersediaan Lapangan</h3>
-          <p>Status lapangan hari ini</p>
-        </div>
+        <div class="card-header"><h3>Ketersediaan Lapangan</h3><p>Status lapangan hari ini</p></div>
         <div class="card-content">
-          <div class="availability-list">
-            <div class="court-item">
-              <div class="court-info">
-                <p><strong>Lapangan A</strong></p>
-                <p class="price">Rp 150.000/jam</p>
-              </div>
-              <span class="status-badge tersedia">Tersedia</span>
+          <div class="availability-list" id="availability-list">
             </div>
-            <div class="court-item">
-              <div class="court-info">
-                <p><strong>Lapangan B</strong></p>
-                <p class="price">Rp 120.000/jam</p>
-              </div>
-              <span class="status-badge tersedia">Tersedia</span>
-            </div>
-            <div class="court-item">
-              <div class="court-info">
-                <p><strong>Lapangan C</strong></p>
-                <p class="price">Rp 100.000/jam</p>
-              </div>
-              <span class="status-badge penuh">Penuh</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -384,139 +56,241 @@
 
   <div class="tab-content" id="profil">
     <div class="card">
-        <div class="card-header">
-            <h3>Profil Saya</h3>
-            <p>Kelola informasi pribadi Anda</p>
-        </div>
-        <div class="card-content">
-            <div class="profile-grid">
-                <div class="form-group">
-                    <label>Nama Lengkap</label>
-                    <div class="profile-field">John Doe</div>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <div class="profile-field">user@example.com</div>
-                </div>
-                <div class="form-group">
-                    <label>No. HP</label>
-                    <div class="profile-field">08987654321</div>
-                </div>
-                <div class="form-group">
-                    <label>Role</label>
-                    <div class="profile-field">user</div>
-                </div>
-            </div>
-            <button class="btn-dark">Simpan Perubahan</button>
-        </div>
+      <div class="card-header"><h3>Profil Saya</h3><p>Kelola informasi pribadi Anda</p></div>
+      <div class="card-content">
+        <form id="profile-form">
+          <div class="profile-grid">
+            <div class="form-group"><label>Nama Lengkap</label><input type="text" id="profile-name" class="profile-field"></div>
+            <div class="form-group"><label>Email</label><input type="email" id="profile-email" class="profile-field" disabled></div>
+            <div class="form-group"><label>No. HP</label><input type="tel" id="profile-phone" class="profile-field"></div>
+            <div class="form-group"><label>Role</label><input type="text" id="profile-role" class="profile-field" disabled></div>
+          </div>
+          <button type="submit" class="btn-dark">Simpan Perubahan</button>
+        </form>
+      </div>
     </div>
   </div>
 
   <div class="tab-content" id="riwayat">
     <div class="card">
-        <div class="card-header">
-            <h3>Riwayat Booking</h3>
-            <p>Daftar reservasi yang pernah Anda buat</p>
+      <div class="card-header"><h3>Riwayat Booking</h3><p>Daftar reservasi yang pernah Anda buat</p></div>
+      <div class="card-content">
+        <div class="history-list" id="history-list">
+           <p>Tidak ada riwayat booking.</p>
         </div>
-        <div class="card-content">
-            <div class="history-list">
-                <div class="history-item">
-                    <div class="history-details">
-                        <p><strong>Lapangan A</strong></p>
-                        <p class="detail-meta">2024-01-15 • 16:00 • 2 jam</p>
-                        <p class="detail-price">Total Rp. 300.000</p>
-                    </div>
-                    <div class="history-status">
-                        <span class="status-badge aktif">Aktif</span>
-                        <p class="payment-status">Terbayar</p>
-                    </div>
-                </div>
-                <div class="history-item">
-                    <div class="history-details">
-                        <p><strong>Lapangan B</strong></p>
-                        <p class="detail-meta">2024-01-10 • 14:00 • 1 jam</p>
-                        <p class="detail-price">Total Rp. 120.000</p>
-                    </div>
-                    <div class="history-status">
-                        <span class="status-badge selesai">Selesai</span>
-                        <p class="payment-status">Terbayar</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
   </div>
 
   <div class="tab-content" id="notifikasi">
     <div class="card">
-        <div class="card-header">
-            <h3>Notifikasi</h3>
-            <p>Pengaturan dan riwayat notifikasi</p>
+      <div class="card-header"><h3>Notifikasi</h3><p>Semua notifikasi untuk Anda</p></div>
+      <div class="card-content">
+        <div class="notification-list" id="notification-list">
+          <p>Tidak ada notifikasi baru.</p>
         </div>
-        <div class="card-content">
-            <div class="notification-list">
-                <div class="notification-item">
-                    <h4>Booking Konfirmasi</h4>
-                    <p>Reservasi Anda untuk Lapangan A pada 15 Januari 2024 telah dikonfirmasi.</p>
-                    <p class="timestamp">2 jam yang lalu</p>
-                </div>
-                <div class="notification-item">
-                    <h4>Pembayaran Diterima</h4>
-                    <p>Pembayaran sebesar Rp 300.000 telah diterima dan dikonfirmasi.</p>
-                    <p class="timestamp">1 hari yang lalu</p>
-                </div>
-            </div>
-        </div>
-    </div>
-  </div>
-
-  <div class="tab-content" id="pembayaran">
-    <div class="card">
-        <div class="card-header">
-            <h3>Metode Pembayaran</h3>
-            <p>Kelola metode pembayaran Anda</p>
-        </div>
-        <div class="card-content">
-            <div class="payment-methods">
-                <div class="payment-method-item">
-                    <h4>Transfer Bank</h4>
-                    <p>Bank BCA: 1234567890 a.n. TENNESA</p>
-                </div>
-                <div class="payment-method-item">
-                    <h4>E-Wallet</h4>
-                    <p>GoPay, OVO, DANA (dalam pengembangan)</p>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
   </div>
 </div>
 
+<script src="app.js"></script>
 <script src="script.js"></script>
 <script>
-  // Skrip untuk Tab
-  const tabs = document.querySelectorAll(".tab");
-  const contents = document.querySelectorAll(".tab-content");
-
-  tabs.forEach(tab => {
-    tab.addEventListener("click", (e) => {
-      e.preventDefault();
-      tabs.forEach(t => t.classList.remove("active"));
-      contents.forEach(c => c.classList.remove("active"));
-
-      tab.classList.add("active");
-      document.getElementById(tab.dataset.tab).classList.add("active");
+document.addEventListener("DOMContentLoaded", () => {
+    // === Bagian Tab ===
+    const tabs = document.querySelectorAll(".tab");
+    const contents = document.querySelectorAll(".tab-content");
+    tabs.forEach(tab => {
+        tab.addEventListener("click", (e) => {
+            e.preventDefault();
+            tabs.forEach(t => t.classList.remove("active"));
+            contents.forEach(c => c.classList.remove("active"));
+            tab.classList.add("active");
+            document.getElementById(tab.dataset.tab).classList.add("active");
+        });
     });
-  });
 
-  // Skrip untuk menu navigasi header
-  const currentLocation = location.href;
-  const menuItems = document.querySelectorAll('header nav a');
-  menuItems.forEach(item => {
-    if (item.href === currentLocation) {
-      item.classList.add('active');
+    // === Variabel Global & Pengambilan Data ===
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    const courts = JSON.parse(localStorage.getItem('tennesa_courts')) || [];
+    let bookings = JSON.parse(localStorage.getItem('tennesa_bookings')) || [];
+    let notifications = JSON.parse(localStorage.getItem('tennesa_notifications')) || [];
+
+    // Jika tidak ada user, redirect ke login
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
     }
-  });
+
+    // === Bagian Profil ===
+    const profileForm = document.getElementById('profile-form');
+    const profileName = document.getElementById('profile-name');
+    const profileEmail = document.getElementById('profile-email');
+    const profilePhone = document.getElementById('profile-phone');
+    const profileRole = document.getElementById('profile-role');
+    const welcomeMessage = document.getElementById('welcome-message');
+
+    // Muat data profil
+    const loadProfile = () => {
+        profileName.value = currentUser.name || '';
+        profileEmail.value = currentUser.email || '';
+        profilePhone.value = currentUser.phone || '';
+        profileRole.value = currentUser.role || '';
+        welcomeMessage.textContent = `Dashboard ${currentUser.name || currentUser.email}`;
+    };
+
+    // Simpan perubahan profil
+    profileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        currentUser.name = profileName.value;
+        currentUser.phone = profilePhone.value;
+        localStorage.setItem('user', JSON.stringify(currentUser));
+        alert('Profil berhasil diperbarui!');
+        loadProfile(); // Muat ulang data
+        // Update juga nama di header jika ada
+        const headerName = document.querySelector('.auth-btn span');
+        if(headerName) {
+            headerName.textContent = `Halo, ${currentUser.name}`;
+        }
+    });
+
+    // === Bagian Reservasi & Ketersediaan ===
+    const bookingForm = document.getElementById('booking-form');
+    const lapanganSelect = document.getElementById('lapangan');
+    const availabilityList = document.getElementById('availability-list');
+    const tanggalInput = document.getElementById('tanggal');
+    
+    // Set tanggal minimal hari ini
+    const today = new Date().toISOString().split('T')[0];
+    tanggalInput.setAttribute('min', today);
+
+
+    // Muat daftar lapangan di form dan list ketersediaan
+    const loadCourts = () => {
+        // Form
+        lapanganSelect.innerHTML = '<option value="">Pilih lapangan</option>';
+        courts.filter(c => c.status === 'Tersedia').forEach(court => {
+            const option = document.createElement('option');
+            option.value = court.id;
+            option.textContent = `${court.name} - Rp ${court.price.toLocaleString('id-ID')}/jam`;
+            lapanganSelect.appendChild(option);
+        });
+
+        // List Ketersediaan
+        availabilityList.innerHTML = '';
+        courts.forEach(court => {
+            const item = document.createElement('div');
+            item.className = 'court-item';
+            item.innerHTML = `
+                <div class="court-info">
+                    <p><strong>${court.name}</strong></p>
+                    <p class="price">Rp ${court.price.toLocaleString('id-ID')}/jam</p>
+                </div>
+                <span class="status-badge ${court.status === 'Tersedia' ? 'tersedia' : 'penuh'}">${court.status}</span>
+            `;
+            availabilityList.appendChild(item);
+        });
+    };
+
+    // Handle submit form reservasi
+    bookingForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const courtId = parseInt(lapanganSelect.value);
+        const selectedCourt = courts.find(c => c.id === courtId);
+        
+        if (!selectedCourt) {
+            alert('Silakan pilih lapangan yang valid!');
+            return;
+        }
+
+        const newBooking = {
+            id: Date.now(),
+            userId: currentUser.email,
+            courtName: selectedCourt.name,
+            date: tanggalInput.value,
+            time: document.getElementById('jam').value,
+            duration: parseInt(document.getElementById('durasi').value),
+            totalPrice: selectedCourt.price * parseInt(document.getElementById('durasi').value),
+            status: 'Aktif',
+            paymentStatus: 'Terbayar' // Disederhanakan
+        };
+        
+        bookings.push(newBooking);
+        localStorage.setItem('tennesa_bookings', JSON.stringify(bookings));
+        
+        // Buat notifikasi
+        const newNotif = {
+            id: Date.now() + 1, // pastikan ID unik
+            userId: currentUser.email,
+            title: "Booking Dikonfirmasi",
+            message: `Reservasi Anda untuk ${newBooking.courtName} pada ${newBooking.date} jam ${newBooking.time} telah berhasil.`,
+            timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
+        }
+        notifications.push(newNotif);
+        localStorage.setItem('tennesa_notifications', JSON.stringify(notifications));
+
+        alert('Reservasi berhasil dibuat!');
+        bookingForm.reset();
+        loadHistory(); // Muat ulang riwayat
+        loadNotifications(); // Muat ulang notifikasi
+    });
+
+    // === Bagian Riwayat ===
+    const historyList = document.getElementById('history-list');
+    const loadHistory = () => {
+        const userBookings = bookings.filter(b => b.userId === currentUser.email);
+        historyList.innerHTML = '';
+        if (userBookings.length === 0) {
+            historyList.innerHTML = '<p>Tidak ada riwayat booking.</p>';
+            return;
+        }
+        userBookings.sort((a, b) => b.id - a.id).forEach(booking => { // Tampilkan yg terbaru di atas
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            item.innerHTML = `
+                <div class="history-details">
+                    <p><strong>${booking.courtName}</strong></p>
+                    <p class="detail-meta">${booking.date} • ${booking.time} • ${booking.duration} jam</p>
+                    <p class="detail-price">Total Rp. ${booking.totalPrice.toLocaleString('id-ID')}</p>
+                </div>
+                <div class="history-status">
+                    <span class="status-badge ${booking.status === 'Aktif' ? 'aktif' : 'selesai'}">${booking.status}</span>
+                    <p class="payment-status">${booking.paymentStatus}</p>
+                </div>
+            `;
+            historyList.appendChild(item);
+        });
+    };
+    
+    // === Bagian Notifikasi ===
+    const notificationList = document.getElementById('notification-list');
+    const loadNotifications = () => {
+        const userNotifications = notifications.filter(n => n.userId === currentUser.email);
+        notificationList.innerHTML = '';
+        if (userNotifications.length === 0) {
+            notificationList.innerHTML = '<p>Tidak ada notifikasi baru.</p>';
+            return;
+        }
+        userNotifications.sort((a,b) => b.id - a.id).forEach(notif => {
+            const item = document.createElement('div');
+            item.className = 'notification-item';
+            item.innerHTML = `
+                <h4>${notif.title}</h4>
+                <p>${notif.message}</p>
+                <p class="timestamp">${notif.timestamp}</p>
+            `;
+            notificationList.appendChild(item);
+        });
+    };
+
+
+    // === Panggil Semua Fungsi Load Awal ===
+    loadProfile();
+    loadCourts();
+    loadHistory();
+    loadNotifications();
+});
 </script>
 </body>
 </html>
