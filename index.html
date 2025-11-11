@@ -16,9 +16,7 @@
     <a href="#" id="dashboard-link">Dashboard</a>
   </nav>
   <div class="auth-btn">
-    <a href="login.html" class="login">Login</a>
-    <a href="register.html" class="register">Register</a>
-  </div>
+    </div>
 </header>
 
 <section class="hero">
@@ -64,7 +62,8 @@
   <h2>Lapangan Kami</h2>
   <p class="subtitle">Pilih dari berbagai lapangan tennis berkualitas tinggi dengan fasilitas lengkap untuk pengalaman bermain yang optimal.</p>
   <div class="lapangan-list" id="home-lapangan-list">
-    </div>
+    <p>Memuat data lapangan...</p>
+  </div>
 </section>
 
 <footer>
@@ -95,45 +94,52 @@
   </div>
 </footer>
 
-<script src="app.js"></script>
 <script src="script.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const lapanganList = document.getElementById('home-lapangan-list');
-    const courts = JSON.parse(localStorage.getItem('tennesa_courts')) || [];
 
-    if (lapanganList) {
-        lapanganList.innerHTML = ''; // Kosongkan daftar
-        if (courts.length > 0) {
-            courts.forEach(court => {
-                const isAvailable = court.status === 'Tersedia';
-                const item = document.createElement('div');
-                item.className = 'lapangan-item';
-                item.innerHTML = `
-                    <div class="item-header">
-                        <h3>${court.name}</h3>
-                        <span class="status-badge ${isAvailable ? 'tersedia' : 'penuh'}">${court.status}</span>
-                    </div>
-                    <p class="fasilitas-title">Fasilitas:</p>
-                    <div class="facilities">
-                        <span>${court.facilities.split(',').join('</span> &#8226; <span>')}</span>
-                    </div>
-                    <div class="item-footer">
-                        <div class="price-info">
-                            <p>Harga per jam</p>
-                            <p class="price">Rp ${court.price.toLocaleString('id-ID')}</p>
+    // Ambil data dari API
+    try {
+        const response = await fetch('api/courts.php');
+        const courts = await response.json();
+
+        if (lapanganList) {
+            lapanganList.innerHTML = ''; // Kosongkan daftar
+            if (courts.length > 0) {
+                courts.forEach(court => {
+                    const isAvailable = court.status === 'Tersedia';
+                    const item = document.createElement('div');
+                    item.className = 'lapangan-item';
+                    item.innerHTML = `
+                        <div class="item-header">
+                            <h3>${court.name}</h3>
+                            <span class="status-badge ${isAvailable ? 'tersedia' : 'penuh'}">${court.status}</span>
                         </div>
-                        ${isAvailable 
-                            ? `<a href="user.html" class="btn-submit" style="width: auto; text-decoration: none;">Book Now</a>`
-                            : `<button class="btn-submit" style="background-color: #ccc; cursor: not-allowed;" disabled>Penuh</button>`
-                        }
-                    </div>
-                `;
-                lapanganList.appendChild(item);
-            });
-        } else {
-            lapanganList.innerHTML = '<p>Saat ini tidak ada lapangan yang tersedia.</p>';
+                        <p class="fasilitas-title">Fasilitas:</p>
+                        <div class="facilities">
+                            <span>${court.facilities.split(',').join('</span> &#8226; <span>')}</span>
+                        </div>
+                        <div class="item-footer">
+                            <div class="price-info">
+                                <p>Harga per jam</p>
+                                <p class="price">Rp ${parseInt(court.price).toLocaleString('id-ID')}</p>
+                            </div>
+                            ${isAvailable 
+                                ? `<a href="user.html" class="btn-submit" style="width: auto; text-decoration: none;">Book Now</a>`
+                                : `<button class="btn-submit" style="background-color: #ccc; cursor: not-allowed;" disabled>Penuh</button>`
+                            }
+                        </div>
+                    `;
+                    lapanganList.appendChild(item);
+                });
+            } else {
+                lapanganList.innerHTML = '<p>Saat ini tidak ada lapangan yang tersedia.</p>';
+            }
         }
+    } catch (error) {
+        console.error("Gagal memuat lapangan:", error);
+        lapanganList.innerHTML = '<p>Gagal memuat data lapangan.</p>';
     }
 });
 </script>

@@ -14,7 +14,8 @@
     <a href="tentang.html">Tentang</a>
     <a href="user.html" id="dashboard-link">Dashboard</a>
   </nav>
-  <div class="auth-btn"></div>
+  <div class="auth-btn">
+      </div>
 </header>
 
 <div class="dashboard-container">
@@ -24,10 +25,10 @@
   </div>
 
   <div class="tabs-container">
-    <a class="tab active" data-tab="reservasi">📅 Reservasi</a>
-    <a class="tab" data-tab="profil">👤 Profil</a>
-    <a class="tab" data-tab="riwayat">🕑 Riwayat</a>
-    <a class="tab" data-tab="notifikasi">🔔 Notifikasi</a>
+    <a class="tab active" data-tab="reservasi">Reservasi</a>
+    <a class="tab" data-tab="profil">Profil</a>
+    <a class="tab" data-tab="riwayat">Riwayat</a>
+    <a class="tab" data-tab="notifikasi">Notifikasi</a>
   </div>
 
   <div class="tab-content active" id="reservasi">
@@ -94,7 +95,6 @@
   </div>
 </div>
 
-<script src="app.js"></script>
 <script src="script.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -112,14 +112,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // === Variabel Global & Pengambilan Data ===
+    // Ambil user dari localStorage (sudah diset saat login)
     const currentUser = JSON.parse(localStorage.getItem('user'));
-    const courts = JSON.parse(localStorage.getItem('tennesa_courts')) || [];
-    let bookings = JSON.parse(localStorage.getItem('tennesa_bookings')) || [];
-    let notifications = JSON.parse(localStorage.getItem('tennesa_notifications')) || [];
 
-    // Jika tidak ada user, redirect ke login
+    // Variabel ini akan diisi oleh API
+    let courts = []; 
+    // bookings dan notifications akan diambil langsung oleh fungsi load-nya
+
+    // Jika tidak ada user, script.js seharusnya sudah me-redirect
     if (!currentUser) {
-        window.location.href = 'login.html';
+        console.error("Tidak ada user, redirect...");
+        window.location.href = 'login.html'; // Fallback redirect
         return;
     }
 
@@ -131,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const profileRole = document.getElementById('profile-role');
     const welcomeMessage = document.getElementById('welcome-message');
 
-    // Muat data profil
+    // Muat data profil (dari localStorage)
     const loadProfile = () => {
         profileName.value = currentUser.name || '';
         profileEmail.value = currentUser.email || '';
@@ -140,18 +143,37 @@ document.addEventListener("DOMContentLoaded", () => {
         welcomeMessage.textContent = `Dashboard ${currentUser.name || currentUser.email}`;
     };
 
-    // Simpan perubahan profil
-    profileForm.addEventListener('submit', (e) => {
+    // Simpan perubahan profil (ke API)
+    profileForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        currentUser.name = profileName.value;
-        currentUser.phone = profilePhone.value;
-        localStorage.setItem('user', JSON.stringify(currentUser));
-        alert('Profil berhasil diperbarui!');
-        loadProfile(); // Muat ulang data
-        // Update juga nama di header jika ada
-        const headerName = document.querySelector('.auth-btn span');
-        if(headerName) {
-            headerName.textContent = `Halo, ${currentUser.name}`;
+        const updatedUser = {
+            name: profileName.value,
+            phone: profilePhone.value
+        };
+
+        try {
+            const response = await fetch('api/profile.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedUser)
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                // Update localStorage dengan data baru dari server
+                localStorage.setItem('user', JSON.stringify(data.user));
+                // Update header span (jika ada)
+                const headerName = document.querySelector('.auth-btn span');
+                if(headerName) {
+                    headerName.textContent = `Halo, ${data.user.name}`;
+                }
+                alert('Profil berhasil diperbarui!');
+                loadProfile(); // Muat ulang data di form
+            } else {
+                alert('Gagal memperbarui profil: ' + data.message);
+            }
+        } catch (error) {
+            alert('Terjadi kesalahan saat memperbarui profil.');
         }
     });
 
@@ -166,35 +188,43 @@ document.addEventListener("DOMContentLoaded", () => {
     tanggalInput.setAttribute('min', today);
 
 
-    // Muat daftar lapangan di form dan list ketersediaan
-    const loadCourts = () => {
-        // Form
-        lapanganSelect.innerHTML = '<option value="">Pilih lapangan</option>';
-        courts.filter(c => c.status === 'Tersedia').forEach(court => {
-            const option = document.createElement('option');
-            option.value = court.id;
-            option.textContent = `${court.name} - Rp ${court.price.toLocaleString('id-ID')}/jam`;
-            lapanganSelect.appendChild(option);
-        });
+    // Muat daftar lapangan di form dan list ketersediaan (dari API)
+    const loadCourts = async () => {
+        try {
+            const response = await fetch('api/courts.php');
+            courts = await response.json(); // Simpan di variabel global
 
-        // List Ketersediaan
-        availabilityList.innerHTML = '';
-        courts.forEach(court => {
-            const item = document.createElement('div');
-            item.className = 'court-item';
-            item.innerHTML = `
-                <div class="court-info">
-                    <p><strong>${court.name}</strong></p>
-                    <p class="price">Rp ${court.price.toLocaleString('id-ID')}/jam</p>
-                </div>
-                <span class="status-badge ${court.status === 'Tersedia' ? 'tersedia' : 'penuh'}">${court.status}</span>
-            `;
-            availabilityList.appendChild(item);
-        });
+            // Form
+            lapanganSelect.innerHTML = '<option value="">Pilih lapangan</option>';
+            courts.filter(c => c.status === 'Tersedia').forEach(court => {
+                const option = document.createElement('option');
+                option.value = court.id;
+                option.textContent = `${court.name} - Rp ${parseInt(court.price).toLocaleString('id-ID')}/jam`;
+                lapanganSelect.appendChild(option);
+            });
+
+            // List Ketersediaan
+            availabilityList.innerHTML = '';
+            courts.forEach(court => {
+                const item = document.createElement('div');
+                item.className = 'court-item';
+                item.innerHTML = `
+                    <div class="court-info">
+                        <p><strong>${court.name}</strong></p>
+                        <p class="price">Rp ${parseInt(court.price).toLocaleString('id-ID')}/jam</p>
+                    </div>
+                    <span class="status-badge ${court.status === 'Tersedia' ? 'tersedia' : 'penuh'}">${court.status}</span>
+                `;
+                availabilityList.appendChild(item);
+            });
+        } catch (error) {
+            console.error("Gagal memuat data lapangan:", error);
+            availabilityList.innerHTML = '<p>Gagal memuat data lapangan.</p>';
+        }
     };
 
-    // Handle submit form reservasi
-    bookingForm.addEventListener('submit', (e) => {
+    // Handle submit form reservasi (ke API)
+    bookingForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const courtId = parseInt(lapanganSelect.value);
         const selectedCourt = courts.find(c => c.id === courtId);
@@ -205,83 +235,98 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const newBooking = {
-            id: Date.now(),
-            userId: currentUser.email,
-            courtName: selectedCourt.name,
+            // userId akan diambil dari sesi di server
+            courtId: selectedCourt.id,
+            courtName: selectedCourt.name, // Kirim nama untuk notifikasi
             date: tanggalInput.value,
             time: document.getElementById('jam').value,
             duration: parseInt(document.getElementById('durasi').value),
-            totalPrice: selectedCourt.price * parseInt(document.getElementById('durasi').value),
-            status: 'Aktif',
-            paymentStatus: 'Terbayar' // Disederhanakan
+            totalPrice: selectedCourt.price * parseInt(document.getElementById('durasi').value)
         };
         
-        bookings.push(newBooking);
-        localStorage.setItem('tennesa_bookings', JSON.stringify(bookings));
-        
-        // Buat notifikasi
-        const newNotif = {
-            id: Date.now() + 1, // pastikan ID unik
-            userId: currentUser.email,
-            title: "Booking Dikonfirmasi",
-            message: `Reservasi Anda untuk ${newBooking.courtName} pada ${newBooking.date} jam ${newBooking.time} telah berhasil.`,
-            timestamp: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
-        }
-        notifications.push(newNotif);
-        localStorage.setItem('tennesa_notifications', JSON.stringify(notifications));
+        try {
+            const response = await fetch('api/bookings.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newBooking)
+            });
+            const data = await response.json();
 
-        alert('Reservasi berhasil dibuat!');
-        bookingForm.reset();
-        loadHistory(); // Muat ulang riwayat
-        loadNotifications(); // Muat ulang notifikasi
+            if (data.success) {
+                alert('Reservasi berhasil dibuat!');
+                bookingForm.reset();
+                loadHistory(); // Muat ulang riwayat
+                loadNotifications(); // Muat ulang notifikasi (dibuat di server)
+            } else {
+                alert('Gagal membuat reservasi: ' + data.message);
+            }
+        } catch (error) {
+             alert('Terjadi kesalahan saat membuat reservasi.');
+        }
     });
 
     // === Bagian Riwayat ===
     const historyList = document.getElementById('history-list');
-    const loadHistory = () => {
-        const userBookings = bookings.filter(b => b.userId === currentUser.email);
-        historyList.innerHTML = '';
-        if (userBookings.length === 0) {
-            historyList.innerHTML = '<p>Tidak ada riwayat booking.</p>';
-            return;
+    const loadHistory = async () => {
+        try {
+            const response = await fetch('api/bookings.php'); // API akan filter by user session
+            const userBookings = await response.json();
+            
+            historyList.innerHTML = '';
+            if (userBookings.length === 0) {
+                historyList.innerHTML = '<p>Tidak ada riwayat booking.</p>';
+                return;
+            }
+            // Data sudah diurutkan dari server
+            userBookings.forEach(booking => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                item.innerHTML = `
+                    <div class="history-details">
+                        <p><strong>${booking.courtName}</strong></p>
+                        <p class="detail-meta">${booking.booking_date} ・ ${booking.start_time} ・ ${booking.duration} jam</p>
+                        <p class="detail-price">Total Rp. ${booking.total_price.toLocaleString('id-ID')}</p>
+                    </div>
+                    <div class="history-status">
+                        <span class="status-badge ${booking.status === 'Aktif' ? 'aktif' : 'selesai'}">${booking.status}</span>
+                        <p class="payment-status">${booking.payment_status}</p>
+                    </div>
+                `;
+                historyList.appendChild(item);
+            });
+        } catch (error) {
+            console.error("Gagal memuat riwayat:", error);
+            historyList.innerHTML = '<p>Gagal memuat riwayat booking.</p>';
         }
-        userBookings.sort((a, b) => b.id - a.id).forEach(booking => { // Tampilkan yg terbaru di atas
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            item.innerHTML = `
-                <div class="history-details">
-                    <p><strong>${booking.courtName}</strong></p>
-                    <p class="detail-meta">${booking.date} • ${booking.time} • ${booking.duration} jam</p>
-                    <p class="detail-price">Total Rp. ${booking.totalPrice.toLocaleString('id-ID')}</p>
-                </div>
-                <div class="history-status">
-                    <span class="status-badge ${booking.status === 'Aktif' ? 'aktif' : 'selesai'}">${booking.status}</span>
-                    <p class="payment-status">${booking.paymentStatus}</p>
-                </div>
-            `;
-            historyList.appendChild(item);
-        });
     };
     
     // === Bagian Notifikasi ===
     const notificationList = document.getElementById('notification-list');
-    const loadNotifications = () => {
-        const userNotifications = notifications.filter(n => n.userId === currentUser.email);
-        notificationList.innerHTML = '';
-        if (userNotifications.length === 0) {
-            notificationList.innerHTML = '<p>Tidak ada notifikasi baru.</p>';
-            return;
+    const loadNotifications = async () => {
+        try {
+            const response = await fetch('api/notifications.php');
+            const userNotifications = await response.json();
+            
+            notificationList.innerHTML = '';
+            if (userNotifications.length === 0) {
+                notificationList.innerHTML = '<p>Tidak ada notifikasi baru.</p>';
+                return;
+            }
+            // Data sudah diurutkan dari server
+            userNotifications.forEach(notif => {
+                const item = document.createElement('div');
+                item.className = 'notification-item';
+                item.innerHTML = `
+                    <h4>${notif.title}</h4>
+                    <p>${notif.message}</p>
+                    <p class="timestamp">${notif.timestamp}</p>
+                `;
+                notificationList.appendChild(item);
+            });
+        } catch (error) {
+            console.error("Gagal memuat notifikasi:", error);
+            notificationList.innerHTML = '<p>Gagal memuat notifikasi.</p>';
         }
-        userNotifications.sort((a,b) => b.id - a.id).forEach(notif => {
-            const item = document.createElement('div');
-            item.className = 'notification-item';
-            item.innerHTML = `
-                <h4>${notif.title}</h4>
-                <p>${notif.message}</p>
-                <p class="timestamp">${notif.timestamp}</p>
-            `;
-            notificationList.appendChild(item);
-        });
     };
 
 

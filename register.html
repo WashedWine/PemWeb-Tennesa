@@ -8,7 +8,7 @@
   <div class="logo">🎾 TENNESA</div>
   <nav>
     <a href="index.html">Beranda</a>
-    <a href="#">Tentang</a>
+    <a href="tentang.html">Tentang</a>
   </nav>
   <div class="auth-btn">
     <a href="login.html" class="login">Login</a>
@@ -19,20 +19,23 @@
 <div class="form-container">
   <h2>Daftar TENNESA</h2>
   <p style="text-align:center;margin-bottom:20px;">Buat akun baru untuk mulai booking lapangan tennis</p>
-  <form>
-    <input type="text" placeholder="Nama Lengkap" required>
-    <input type="email" placeholder="Email" required>
-    <input type="tel" placeholder="No. HP" required>
-    <input type="password" placeholder="Password (minimal 6 karakter)" required>
-    <input type="password" placeholder="Konfirmasi Password" required>
+  
+  <form id="register-form">
+    <input type="text" id="name" placeholder="Nama Lengkap" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="tel" id="phone" placeholder="No. HP">
+    <input type="password" id="password" placeholder="Password (minimal 6 karakter)" required>
+    <input type="password" id="confirm_password" placeholder="Konfirmasi Password" required>
     <button type="submit">Daftar</button>
   </form>
+
+  <p id="error-message" style="color:red;text-align:center;margin-top:10px;"></p>
   <p style="text-align:center;margin-top:12px;">Sudah punya akun? <a href="login.html">Masuk sekarang</a></p>
 </div>
-</body>
-</html>
 
+<script src="script.js"></script>
 <script>
+  // Script untuk menu aktif
   const currentLocation = location.href;
   const menuItems = document.querySelectorAll('nav a');
   menuItems.forEach(item => {
@@ -40,4 +43,50 @@
       item.classList.add('active');
     }
   });
+
+  // Script untuk Register
+  document.getElementById("register-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+    const password = document.getElementById("password").value;
+    const confirm_password = document.getElementById("confirm_password").value;
+    const errorMessage = document.getElementById("error-message");
+    errorMessage.textContent = "";
+
+    if (password !== confirm_password) {
+      errorMessage.textContent = "Konfirmasi password tidak cocok.";
+      return;
+    }
+    
+    if (password.length < 6) {
+      errorMessage.textContent = "Password minimal 6 karakter.";
+      return;
+    }
+
+    try {
+      const response = await fetch("api/register.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, phone, password }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(data.message);
+        window.location.href = "login.html";
+      } else {
+        errorMessage.textContent = data.message;
+      }
+    } catch (error) {
+      errorMessage.textContent = "Terjadi kesalahan. Silakan coba lagi.";
+      console.error("Register error:", error);
+    }
+  });
 </script>
+</body>
+</html>

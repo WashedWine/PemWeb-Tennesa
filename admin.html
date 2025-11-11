@@ -57,7 +57,6 @@
   </button>
 </section>
 
-<script src="app.js"></script>
 <script src="script.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -68,44 +67,55 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalLapanganEl = document.getElementById("total-lapangan");
 
 
-    // Fungsi untuk memuat ringkasan/summary
-    const loadSummary = () => {
-        const bookings = JSON.parse(localStorage.getItem("tennesa_bookings")) || [];
-        const courts = JSON.parse(localStorage.getItem("tennesa_courts")) || [];
-        
-        const totalPendapatan = bookings.reduce((sum, booking) => sum + booking.totalPrice, 0);
+    // Fungsi untuk memuat ringkasan/summary dari API
+    const loadSummary = async () => {
+        try {
+            const response = await fetch("api/summary.php");
+            const data = await response.json();
 
-        totalBookingEl.textContent = bookings.length;
-        totalPendapatanEl.textContent = `Rp ${totalPendapatan.toLocaleString('id-ID')}`;
-        totalLapanganEl.textContent = courts.length;
+            if (data.total_booking !== undefined) {
+                totalBookingEl.textContent = data.total_booking;
+                totalPendapatanEl.textContent = `Rp ${data.total_pendapatan.toLocaleString('id-ID')}`;
+                totalLapanganEl.textContent = data.total_lapangan;
+            }
+        } catch (error) {
+            console.error("Gagal memuat summary:", error);
+        }
     };
 
-    // Fungsi untuk merender data lapangan ke tabel
-    const renderCourts = () => {
-      const courts = JSON.parse(localStorage.getItem("tennesa_courts")) || [];
-      tableBody.innerHTML = ""; // Kosongkan tabel sebelum diisi
-      
-      if (courts.length > 0) {
-        courts.forEach(court => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${court.name}</td>
-            <td>${court.facilities}</td>
-            <td>Rp ${court.price.toLocaleString('id-ID')}</td>
-            <td><span style="color:${court.status === 'Tersedia' ? 'green' : 'red'};font-weight:bold;">${court.status}</span></td>
-            <td class="action-btn">
-              <button class="delete" data-id="${court.id}">🗑️</button>
-            </td>
-          `;
-          tableBody.appendChild(row);
-        });
-      } else {
-        tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Belum ada data lapangan.</td></tr>';
+    // Fungsi untuk merender data lapangan ke tabel dari API
+    const renderCourts = async () => {
+      try {
+        const response = await fetch("api/courts.php");
+        const courts = await response.json();
+        
+        tableBody.innerHTML = ""; // Kosongkan tabel sebelum diisi
+        
+        if (courts.length > 0) {
+          courts.forEach(court => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${court.name}</td>
+              <td>${court.facilities}</td>
+              <td>Rp ${parseInt(court.price).toLocaleString('id-ID')}</td>
+              <td><span style="color:${court.status === 'Tersedia' ? 'green' : 'red'};font-weight:bold;">${court.status}</span></td>
+              <td class="action-btn">
+                <button class="delete" data-id="${court.id}">🗑️</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        } else {
+          tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Belum ada data lapangan.</td></tr>';
+        }
+      } catch (error) {
+        console.error("Gagal memuat data lapangan:", error);
+        tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Gagal memuat data.</td></tr>';
       }
     };
 
     // Event listener untuk tombol tambah lapangan
-    addCourtBtn.addEventListener("click", () => {
+    addCourtBtn.addEventListener("click", async () => {
       const name = prompt("Masukkan Nama Lapangan:");
       if (!name) return;
       const facilities = prompt("Masukkan Fasilitas (pisahkan dengan koma):");
@@ -115,35 +125,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       if (name && facilities && price) {
-        const courts = JSON.parse(localStorage.getItem("tennesa_courts")) || [];
         const newCourt = {
-          id: Date.now(), // ID unik berdasarkan timestamp
           name,
           facilities,
           price,
           status: "Tersedia"
         };
-        courts.push(newCourt);
-        localStorage.setItem("tennesa_courts", JSON.stringify(courts));
-        renderCourts(); // Muat ulang tabel
-        loadSummary(); // Update summary
-        alert("Lapangan baru berhasil ditambahkan!");
+        
+        try {
+            // Kirim data ke API
+            const response = await fetch("api/courts.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newCourt)
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                renderCourts(); // Muat ulang tabel
+                loadSummary(); // Update summary
+                alert("Lapangan baru berhasil ditambahkan!");
+            } else {
+                alert("Gagal menambahkan lapangan: " + data.message);
+            }
+        } catch (error) {
+            alert("Terjadi kesalahan saat menambahkan lapangan.");
+        }
+        
       } else {
         alert("Input tidak valid. Semua kolom harus diisi.");
       }
     });
     
     // Event listener untuk tombol hapus (menggunakan event delegation)
-    tableBody.addEventListener('click', (e) => {
+    tableBody.addEventListener('click', async (e) => {
         if (e.target.classList.contains('delete')) {
             const courtId = parseInt(e.target.dataset.id);
             if (confirm('Apakah Anda yakin ingin menghapus lapangan ini?')) {
-                let courts = JSON.parse(localStorage.getItem("tennesa_courts"));
-                courts = courts.filter(court => court.id !== courtId);
-                localStorage.setItem("tennesa_courts", JSON.stringify(courts));
-                renderCourts(); // Muat ulang tabel
-                loadSummary(); // Update summary
-                alert('Lapangan berhasil dihapus.');
+                try {
+                    // Panggil API untuk menghapus
+                    const response = await fetch(`api/courts.php?id=${courtId}`, {
+                        method: "DELETE"
+                    });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        renderCourts(); // Muat ulang tabel
+                        loadSummary(); // Update summary
+                        alert('Lapangan berhasil dihapus.');
+                    } else {
+                        alert('Gagal menghapus lapangan: ' + data.message);
+                    }
+                } catch (error) {
+                    alert('Terjadi kesalahan saat menghapus lapangan.');
+                }
             }
         }
     });
